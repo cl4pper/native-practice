@@ -8,6 +8,10 @@ export default function App() {
 
   function clearInput() {
     updateText('');
+  };
+
+  function clearList() {
+    handleList([]);
   }
 
   function addItem(item) {
@@ -29,11 +33,18 @@ export default function App() {
         onChangeText={(value) => updateText(value)}
         value={text}
       />
-      <Button
-        style={styles.button}
-        title="Add item"
-        onPress={() => updateList(text)}
-      />
+      <View style={styles.buttons}>
+        <Button
+          style={styles.button}
+          title="Add item"
+          onPress={() => updateList(text)}
+        />
+        <Button
+          color="#ff5c5c"
+          title="Clear list"
+          onPress={() => clearList()}
+        />
+      </View>
       <View>
         { list.map((item, index) => <Text key={index}>{item}</Text>) }
       </View>
@@ -52,14 +63,14 @@ const styles = StyleSheet.create({
   },
   inputText: {
     width: 200,
-    padding: 8,
+    padding: 12,
+    marginBottom: 10,
     borderWidth: 1,
     borderColor: '#313131',
     borderRadius: 4,
   },
-  button: {
-    color: '#FFFFFF',
-    backgroundColor: '#3A96F4',
-    borderRadius: 4,
+  buttons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });
