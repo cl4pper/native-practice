@@ -12,18 +12,22 @@ export default function App() {
 
   function clearList() {
     handleList([]);
-  }
+    Alert.alert('List cleared.');
+  };
+
+  function removeItem(selected) {
+    handleList(list.filter(item => list.indexOf(item) !== selected));
+  };
 
   function addItem(item) {
     let newList = [...list, item];
-    handleList(newList) ;
+    handleList(newList);
   };
 
   function updateList(item) {
     addItem(item);
     clearInput();
-    Alert.alert('List has been updated.');
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -46,7 +50,14 @@ export default function App() {
         />
       </View>
       <View>
-        { list.map((item, index) => <Text key={index}>{item}</Text>) }
+        { list.map((item, index) => (
+          <View style={styles.item}>
+            <Text
+              key={index}
+              style={styles.text}
+              onPress={() => removeItem(index)}>{item}</Text>
+          </View>
+        )) }
       </View>
       <StatusBar style="auto" />
     </View>
@@ -72,5 +83,16 @@ const styles = StyleSheet.create({
   buttons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  item: {
+    width: 200,
+    paddingVertical: 8,
+    paddingHorizontal: 4,
+    backgroundColor: '#EE88BC',
+    marginBottom: 4,
+    borderRadius: 4,
+  },
+  text: {
+    textAlign: 'center',
   },
 });
