@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { Alert, Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Alert, Button, FlatList, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 
 export default function App() {
   const [text, updateText] = useState('');
@@ -16,17 +16,24 @@ export default function App() {
   };
 
   function removeItem(selected) {
-    handleList(list.filter(item => list.indexOf(item) !== selected));
+    handleList(list.filter(item => item.id !== selected));
   };
 
-  function addItem(item) {
-    let newList = [...list, item];
+  function generateItem(value) {
+    return {
+      id: Math.random().toString(),
+      value,
+    }
+  };
+
+  function addItem(value) {
+    let newList = [...list, generateItem(value)];
     handleList(newList);
   };
 
   function updateList(item) {
     addItem(item);
-    clearInput();
+    // clearInput();
   };
 
   return (
@@ -49,16 +56,16 @@ export default function App() {
           onPress={() => clearList()}
         />
       </View>
-      <View>
-        { list.map((item, index) => (
+      <FlatList
+        style={styles.flatList}
+        data={list}
+        keyExtractor={item => list.indexOf(item)}
+        renderItem={(itemData) => (
           <View style={styles.item}>
-            <Text
-              key={index}
-              style={styles.text}
-              onPress={() => removeItem(index)}>{item}</Text>
+            <Text style={styles.text} onPress={() => removeItem(itemData.item.id)}>{itemData.item.value}</Text>
           </View>
-        )) }
-      </View>
+        )}
+        />
       <StatusBar style="auto" />
     </View>
   );
@@ -66,14 +73,14 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 40,
+    paddingVertical: 40,
+    paddingHorizontal: 20,
     backgroundColor: '#fff',
   },
   inputText: {
-    width: 200,
+    width: 240,
     padding: 12,
     marginBottom: 10,
     borderWidth: 1,
@@ -83,9 +90,13 @@ const styles = StyleSheet.create({
   buttons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+  flatList: {
+    paddingHorizontal: 8,
   },
   item: {
-    width: 200,
+    width: 240,
     paddingVertical: 8,
     paddingHorizontal: 4,
     backgroundColor: '#EE88BC',
