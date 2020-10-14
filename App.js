@@ -1,6 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { Alert, Button, FlatList, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Alert, Button, FlatList, StyleSheet, TextInput, View } from 'react-native';
+
+import { ListItem } from './src/components';
 
 export default function App() {
   const [text, updateText] = useState('');
@@ -61,10 +63,10 @@ export default function App() {
         data={list}
         keyExtractor={item => list.indexOf(item)}
         renderItem={(itemData) => (
-          <View style={styles.item}>
-            <Text style={styles.text} onPress={() => removeItem(itemData.item.id)}>{itemData.item.value}</Text>
-          </View>
-        )}
+          <ListItem
+            item={itemData.item}
+            onPress={() => removeItem(itemData.item.id)} />
+          )}
         />
       <StatusBar style="auto" />
     </View>
@@ -94,16 +96,5 @@ const styles = StyleSheet.create({
   },
   flatList: {
     paddingHorizontal: 8,
-  },
-  item: {
-    width: 240,
-    paddingVertical: 8,
-    paddingHorizontal: 4,
-    backgroundColor: '#EE88BC',
-    marginBottom: 4,
-    borderRadius: 4,
-  },
-  text: {
-    textAlign: 'center',
   },
 });
