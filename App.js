@@ -1,11 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { Alert, Button, FlatList, StyleSheet, TextInput, View } from 'react-native';
+import { Alert, FlatList, StyleSheet, View } from 'react-native';
 
-import { ListItem } from './src/components';
+import { ListItem, ListInput } from './src/components';
 
 export default function App() {
-  const [text, updateText] = useState('');
   const [list, handleList] = useState([]);
 
   function clearInput() {
@@ -40,24 +39,12 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <TextInput
-        style={styles.inputText}
-        placeholder="Add something..."
-        onChangeText={(value) => updateText(value)}
-        value={text}
-      />
-      <View style={styles.buttons}>
-        <Button
-          style={styles.button}
-          title="Add item"
-          onPress={() => updateList(text)}
-        />
-        <Button
-          color="#ff5c5c"
-          title="Clear list"
-          onPress={() => clearList()}
-        />
-      </View>
+      <ListInput
+        placeholder="Add item..."
+        leftLabel="Add item"
+        rightLabel="Clear list"
+        leftAction={(value) => updateList(value)}
+        rightAction={() => clearList()} />
       <FlatList
         style={styles.flatList}
         data={list}
@@ -80,19 +67,6 @@ const styles = StyleSheet.create({
     paddingVertical: 40,
     paddingHorizontal: 20,
     backgroundColor: '#fff',
-  },
-  inputText: {
-    width: 240,
-    padding: 12,
-    marginBottom: 10,
-    borderWidth: 1,
-    borderColor: '#313131',
-    borderRadius: 4,
-  },
-  buttons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 10,
   },
   flatList: {
     paddingHorizontal: 8,
